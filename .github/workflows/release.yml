@@ -1,0 +1,11 @@
+name: Release
+on: { push: { branches: [main] }, workflow_dispatch: {} }
+permissions: { contents: write }
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cat apk.part.* > LS-Wallet-1.0.0.apk && echo "$(cat apk.sha256)  LS-Wallet-1.0.0.apk" | sha256sum -c
+      - uses: softprops/action-gh-release@v2
+        with: { tag_name: v1.0.0, name: LS Wallet 1.0.0, files: LS-Wallet-1.0.0.apk, make_latest: true }
